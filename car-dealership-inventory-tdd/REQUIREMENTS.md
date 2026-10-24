@@ -6,6 +6,8 @@
 
 > Phase 4 implementation update: Authenticated listing and combined search, plus ADMIN create, full update, and delete are implemented. Vehicle IDs are UUIDs, `quantityInStock` maps to stored `quantity`, and returned price is a two-place decimal string. Purchase and restock remain future work.
 
+> Current implementation update: Purchase and restock endpoints, a `Purchase` audit model, and the React/Tailwind frontend are now implemented. The older phase notes document decisions at those times; this update reflects current behavior.
+
 This document defines the proposed contract for the Incubyte TDD kata. Phase 0 contains analysis only. No application code, database, or Git repository has been created.
 
 ## 1. Functional requirements

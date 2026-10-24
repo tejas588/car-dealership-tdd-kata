@@ -55,6 +55,20 @@ export function vehicleId(id) {
   return id;
 }
 
+export function restockInput(body) {
+  if (
+    !body ||
+    typeof body !== 'object' ||
+    Array.isArray(body) ||
+    Object.keys(body).length !== 1 ||
+    !Number.isInteger(body.quantity) ||
+    body.quantity < 1 ||
+    body.quantity > 2147483647
+  )
+    fail();
+  return body.quantity;
+}
+
 export function listQuery(query, search = false) {
   const allowed = search
     ? [

@@ -7,6 +7,8 @@ router.use(requireAuth);
 router.get('/', controller.list);
 router.get('/search', controller.search);
 router.post('/', requireRole('ADMIN'), controller.create);
+router.post('/:id/purchase', controller.purchase);
+router.post('/:id/restock', requireRole('ADMIN'), controller.restock);
 router.put('/:id', requireRole('ADMIN'), controller.update);
 router.delete('/:id', requireRole('ADMIN'), controller.remove);
 export default router;

@@ -6,6 +6,8 @@
 
 > Phase 4 update: `backend/tests/vehicles.test.js` covers listing, combined search, admin writes, invalid inputs, permissions, and missing resources. Purchase and restock scenarios remain planned.
 
+> Current implementation update: `backend/tests/inventory.test.js` covers purchase, restock, last-unit concurrency, stock overflow, and purchase-history deletion protection. `frontend/src/App.test.jsx` covers login navigation, sold-out purchase disabling, and admin form access.
+
 This is a plan, not a test execution report. No tests have been written or run. Backend tests will use Jest, Supertest, and a separate PostgreSQL test database. Frontend tests will use Vitest and React Testing Library.
 
 ## TDD workflow for each backend slice

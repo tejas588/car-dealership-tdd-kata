@@ -16,3 +16,9 @@ export async function remove(request, response) {
   await service.remove(request.params.id);
   response.status(204).send();
 }
+export async function purchase(request, response) {
+  response.json(await service.purchase(request.params.id, request.user.id));
+}
+export async function restock(request, response) {
+  response.json(await service.restock(request.params.id, request.body));
+}

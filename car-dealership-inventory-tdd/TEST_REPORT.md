@@ -58,3 +58,9 @@ The vehicle integration tests use the separate PostgreSQL test database and clea
 | REFACTOR | Test fixtures made less dependent on order; vehicle suite passed 18/18. |
 
 Final full-suite result: 6 suites and 58 tests passed, 0 failed. Coverage: 95.85% statements, 88.96% branches, 100% functions, 96.64% lines. Backend lint, formatting, and frontend build passed. Purchasing and restocking were not implemented. The Prisma 6 audit advisory remains unresolved.
+
+## Inventory and frontend end-to-end phase (2026-10-24)
+
+RED: `npm test -- --silent tests/inventory.test.js` returned 4 failures and one misleading 404 pass before purchase/restock routes existed. GREEN: after the `Purchase` migration was applied to both databases and atomic inventory logic was added, all 5 focused tests passed. A later test for deleting a purchased vehicle failed with 500 instead of 409; purchase-history protection fixed it, and 7/7 focused tests passed. The implementation was formatted and the full suites rerun.
+
+Final backend: 7 suites, 65 tests passed, 0 failed; coverage 96.05% statements, 89.88% branches, 100% functions, 96.71% lines. Prisma validation, backend lint, and formatting passed. Frontend: 3 Vitest/React Testing Library tests passed; Vite production build passed. A temporary HTTP smoke test through Vite's `/api` proxy passed registration, login, listing, admin create, purchase, and restock; it removed its temporary records. The app and API returned HTTP 200 at `http://localhost:5173/` and its proxied `/api/health` endpoint. A screenshot was not captured because the local headless browser failed to write one. The earlier Prisma 6 audit advisory remains unresolved.
