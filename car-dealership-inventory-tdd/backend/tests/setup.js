@@ -7,3 +7,4 @@ assertSafeTestDatabase(developmentUrl, testUrl);
 
 process.env.ORIGINAL_DATABASE_URL = developmentUrl;
 process.env.DATABASE_URL = testUrl;
+process.env.JWT_SECRET = 'test-only-jwt-secret-with-sufficient-length';
