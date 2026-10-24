@@ -59,6 +59,29 @@ describe('POST /api/auth/register', () => {
     expect(await prisma.user.count({ where: { email } })).toBe(1);
   });
 
+  test('allows only one concurrent registration for the same email', async () => {
+    const email = uniqueEmail();
+    const responses = await Promise.all([
+      request(app).post('/api/auth/register').send({
+        name: 'First',
+        email,
+        password: 'correct-horse-123',
+      }),
+      request(app).post('/api/auth/register').send({
+        name: 'Second',
+        email,
+        password: 'correct-horse-456',
+      }),
+    ]);
+    expect(responses.map((response) => response.status).sort()).toEqual([
+      201, 409,
+    ]);
+    userIds.push(
+      responses.find((response) => response.status === 201).body.user.id,
+    );
+    expect(await prisma.user.count({ where: { email } })).toBe(1);
+  });
+
   test.each([
     [
       'blank name',
@@ -81,8 +104,26 @@ describe('POST /api/auth/register', () => {
         role: 'ADMIN',
       },
     ],
+    [
+      'unknown field',
+      {
+        name: 'Test',
+        email: uniqueEmail(),
+        password: 'correct-horse-123',
+        isAdmin: true,
+      },
+    ],
   ])('rejects %s', async (_case, body) => {
     const response = await request(app).post('/api/auth/register').send(body);
+    expect(response.status).toBe(400);
+    expect(response.body.error.code).toBe('VALIDATION_ERROR');
+  });
+
+  test('rejects malformed JSON without exposing internals', async () => {
+    const response = await request(app)
+      .post('/api/auth/register')
+      .set('Content-Type', 'application/json')
+      .send('{invalid');
     expect(response.status).toBe(400);
     expect(response.body.error.code).toBe('VALIDATION_ERROR');
   });

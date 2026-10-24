@@ -1,7 +1,9 @@
 import { assertSafeTestDatabase } from '../src/config/database-safety.js';
 
-const development = 'postgresql://example:placeholder@127.0.0.1:5432/car_dealership';
-const testing = 'postgresql://example:placeholder@127.0.0.1:5432/car_dealership_test';
+const development =
+  'postgresql://example:placeholder@127.0.0.1:5432/car_dealership';
+const testing =
+  'postgresql://example:placeholder@127.0.0.1:5432/car_dealership_test';
 
 test('accepts a separate dedicated test database', () => {
   expect(() => assertSafeTestDatabase(development, testing)).not.toThrow();
