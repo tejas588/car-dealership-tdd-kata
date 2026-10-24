@@ -38,7 +38,7 @@ The authentication tests use the dedicated PostgreSQL test database and clean cr
 
 | Stage | Command | Actual result |
 | --- | --- | --- |
-| RED: registration and login | `npm test -- --silent tests/auth.test.js` | 10 failed, 0 passed; both routes returned 404 before implementation. The failing tests were committed as `7d17aca`. |
+| RED: registration and login | `npm test -- --silent tests/auth.test.js` | 10 failed, 0 passed; both routes returned 404 before implementation. The failing tests were committed before implementation. |
 | GREEN: registration and login | `npm test -- --silent tests/auth.test.js` | 10 passed after adding the layered routes, validation, bcrypt hashing, and JWT issuance. |
 | RED: authorization middleware | `npm test -- --silent tests/authorization.test.js` | Suite failed to load because `authorization.js` did not yet exist. |
 | GREEN: authorization middleware | `npm test -- --silent tests/authorization.test.js` | 8 passed after implementing token checks and database-backed role checks. |
@@ -52,7 +52,7 @@ The vehicle integration tests use the separate PostgreSQL test database and clea
 
 | Stage | Actual result |
 | --- | --- |
-| RED | `npm test -- --silent tests/vehicles.test.js`: 12 failed because routes were missing; one apparent 404 pass was not meaningful. Failing tests committed as `a1ca1f7`. |
+| RED | `npm test -- --silent tests/vehicles.test.js`: 12 failed because routes were missing; one apparent 404 pass was not meaningful. Failing tests were committed before implementation. |
 | GREEN | Same command: 13 passed after implementing vehicle routes and layers. |
 | Additional RED/GREEN | Oversized pagination offset returned 200 instead of 400 (1 failed, 17 passed); guard added, then 18 passed. |
 | REFACTOR | Test fixtures made less dependent on order; vehicle suite passed 18/18. |
