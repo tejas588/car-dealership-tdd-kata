@@ -8,11 +8,20 @@
     "start": "node src/server.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand",
     "test:coverage": "npm test -- --coverage",
+    "db:generate": "prisma generate",
+    "db:validate": "prisma validate",
+    "db:migrate:dev": "prisma migrate deploy",
+    "db:migrate:test": "node scripts/test-database-cli.mjs migrate deploy",
+    "db:status:test": "node scripts/test-database-cli.mjs migrate status",
+    "db:seed": "node scripts/seed.mjs",
+    "db:create-admin": "node scripts/create-admin.mjs",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
   "dependencies": {
+    "@prisma/client": "^6.19.0",
+    "bcrypt": "^6.0.0",
     "dotenv": "^16.6.1",
     "express": "^5.1.0"
   },
@@ -22,6 +31,7 @@
     "globals": "^16.0.0",
     "jest": "^30.0.0",
     "prettier": "^3.0.0",
+    "prisma": "^6.19.0",
     "supertest": "^7.0.0"
   }
 }

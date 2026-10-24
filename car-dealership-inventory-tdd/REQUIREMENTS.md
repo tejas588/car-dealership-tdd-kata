@@ -1,5 +1,7 @@
 # Car Dealership Inventory System — Requirements (Phase 0)
 
+> Phase 2 implementation update: The approved Phase 2 brief supersedes the initial database proposal below. Database IDs are UUIDs; `User` adds required `name`; vehicle stock is stored as `quantity` (the future API may map this to `quantityInStock`); the database currently has only `User` and `Vehicle`. The proposed `Purchase` model and associated deletion rule require a later phase and are not implemented yet. All API endpoint descriptions below remain proposals for later phases and must be reconciled with this schema before implementation.
+
 This document defines the proposed contract for the Incubyte TDD kata. Phase 0 contains analysis only. No application code, database, or Git repository has been created.
 
 ## 1. Functional requirements

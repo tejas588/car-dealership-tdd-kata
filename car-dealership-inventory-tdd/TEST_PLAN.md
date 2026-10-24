@@ -1,5 +1,7 @@
 # Car Dealership Inventory System — Test Plan (Phase 0)
 
+> Phase 2 update: Database integration tests now cover the UUID `User` and `Vehicle` schema in `backend/tests/database.test.js`. Purchase history and its proposed model remain future work. `TEST_REPORT.md` contains actual Phase 2 execution results.
+
 This is a plan, not a test execution report. No tests have been written or run. Backend tests will use Jest, Supertest, and a separate PostgreSQL test database. Frontend tests will use Vitest and React Testing Library.
 
 ## TDD workflow for each backend slice
