@@ -8,6 +8,7 @@ import {
 } from "@testing-library/react";
 import App from "./App.jsx";
 import VehicleCard from "./components/VehicleCard.jsx";
+import VehicleForm from "./components/VehicleForm.jsx";
 
 vi.mock("./services/api.js", () => ({
   api: { post: vi.fn(), get: vi.fn(), delete: vi.fn(), put: vi.fn() },
@@ -84,4 +85,30 @@ test("opens admin vehicle creation form", async () => {
   expect(
     screen.getByRole("dialog", { name: "create vehicle" }),
   ).toBeInTheDocument();
+});
+
+test("editing submits only vehicle fields", () => {
+  const onSubmit = vi.fn();
+  render(
+    <VehicleForm
+      initial={{
+        id: "vehicle-id",
+        make: "Honda",
+        model: "City",
+        category: "Sedan",
+        price: "1200000.00",
+        quantityInStock: 2,
+      }}
+      onSubmit={onSubmit}
+      onCancel={() => {}}
+    />,
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Save changes" }));
+  expect(onSubmit).toHaveBeenCalledWith({
+    make: "Honda",
+    model: "City",
+    category: "Sedan",
+    price: "1200000.00",
+    quantityInStock: 2,
+  });
 });
