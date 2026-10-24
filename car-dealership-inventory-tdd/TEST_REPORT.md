@@ -31,3 +31,17 @@ PostgreSQL 18.4; Prisma CLI and Client 6.19.0. The development and testing datab
 Final coverage: 100% statements, 90.9% branches, 100% functions, 100% lines for included backend `src` files. `npm run lint`, `npm run format:check`, and frontend `npm run build` passed. `npm run db:seed` created 5 development vehicles on first run and 0 on second run. No admin was created; admin provisioning requires private credentials. The test suite cleans its own records and disconnects clients.
 
 Dependency audit note: `npm audit --omit=dev --audit-level=high` reported 4 high advisories through Prisma 6's CLI/config dependency chain (`deepmerge-ts` and `effect`); npm suggests a breaking upgrade to Prisma 7. No forced upgrade was applied in Phase 2. The audit is unresolved and should be revisited before deployment.
+
+## Phase 3: user authentication and JWT authorization (2026-10-24)
+
+The authentication tests use the dedicated PostgreSQL test database and clean created users. No development users or admin accounts were created by tests.
+
+| Stage | Command | Actual result |
+| --- | --- | --- |
+| RED: registration and login | `npm test -- --silent tests/auth.test.js` | 10 failed, 0 passed; both routes returned 404 before implementation. The failing tests were committed as `7d17aca`. |
+| GREEN: registration and login | `npm test -- --silent tests/auth.test.js` | 10 passed after adding the layered routes, validation, bcrypt hashing, and JWT issuance. |
+| RED: authorization middleware | `npm test -- --silent tests/authorization.test.js` | Suite failed to load because `authorization.js` did not yet exist. |
+| GREEN: authorization middleware | `npm test -- --silent tests/authorization.test.js` | 8 passed after implementing token checks and database-backed role checks. |
+| REFACTOR and regression | `npm run test:coverage -- --silent` | 5 suites and 40 tests passed after validation simplification and expanded regression cases; final coverage is recorded below. |
+
+Final Phase 3 coverage: 94.44% statements, 86.76% branches, 100% functions, and 94.38% lines for included backend `src` files. `npm run lint`, `npm run format:check`, and frontend `npm run build` passed after correcting an unused Express error-handler parameter lint rule and formatting. The previous Prisma 6 audit advisory remains unresolved.

@@ -16,13 +16,12 @@ function normalizeEmail(email) {
 }
 
 export function validateRegistration(body) {
-  if (!validObject(body, ['name', 'email', 'password', 'role'])) {
+  if (!validObject(body, ['name', 'email', 'password'])) {
     throw new HttpError(400, 'VALIDATION_ERROR', 'Invalid registration input');
   }
   const name = typeof body.name === 'string' ? body.name.trim() : '';
   const email = normalizeEmail(body.email);
   if (
-    'role' in body ||
     !name ||
     name.length > 100 ||
     !emailPattern.test(email) ||

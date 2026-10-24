@@ -2,6 +2,8 @@
 
 > Phase 2 implementation update: The approved Phase 2 brief supersedes the initial database proposal below. Database IDs are UUIDs; `User` adds required `name`; vehicle stock is stored as `quantity` (the future API may map this to `quantityInStock`); the database currently has only `User` and `Vehicle`. The proposed `Purchase` model and associated deletion rule require a later phase and are not implemented yet. All API endpoint descriptions below remain proposals for later phases and must be reconciled with this schema before implementation.
 
+> Phase 3 implementation update: Registration requires `{ name, email, password }` because `User.name` is required. It creates only USER accounts. Login returns a one-hour HS256 JWT. Reusable middleware verifies tokens and reads the current role from the database; no vehicle routes use it yet.
+
 This document defines the proposed contract for the Incubyte TDD kata. Phase 0 contains analysis only. No application code, database, or Git repository has been created.
 
 ## 1. Functional requirements
@@ -40,8 +42,8 @@ All endpoints use JSON. Protected requests send `Authorization: Bearer <JWT>`. I
 
 | Method and path | Access | Request | Success |
 | --- | --- | --- | --- |
-| `POST /api/auth/register` | Public | `{ email, password }` | `201` with `{ user: { id, email, role: "USER" } }` |
-| `POST /api/auth/login` | Public | `{ email, password }` | `200` with `{ token, user: { id, email, role } }` |
+| `POST /api/auth/register` | Public | `{ name, email, password }` | `201` with `{ user: { id, name, email, role: "USER" } }` |
+| `POST /api/auth/login` | Public | `{ email, password }` | `200` with `{ token, user: { id, name, email, role } }` |
 | `POST /api/vehicles` | ADMIN | `{ make, model, category, price, quantityInStock }` | `201` with vehicle |
 | `GET /api/vehicles` | USER, ADMIN | Optional `page`, `limit` | `200` with `{ data: [vehicle], pagination: { page, limit, total } }` |
 | `GET /api/vehicles/search` | USER, ADMIN | Optional `make`, `model`, `category`, `minPrice`, `maxPrice`, `inStock`, `page`, `limit` | `200` with same list shape |

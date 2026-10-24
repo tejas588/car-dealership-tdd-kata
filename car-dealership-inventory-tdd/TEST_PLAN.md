@@ -2,6 +2,8 @@
 
 > Phase 2 update: Database integration tests now cover the UUID `User` and `Vehicle` schema in `backend/tests/database.test.js`. Purchase history and its proposed model remain future work. `TEST_REPORT.md` contains actual Phase 2 execution results.
 
+> Phase 3 update: `backend/tests/auth.test.js` and `backend/tests/authorization.test.js` cover registration, login, JWT checks, and role enforcement against the dedicated PostgreSQL test database. Vehicle and inventory API scenarios remain planned.
+
 This is a plan, not a test execution report. No tests have been written or run. Backend tests will use Jest, Supertest, and a separate PostgreSQL test database. Frontend tests will use Vitest and React Testing Library.
 
 ## TDD workflow for each backend slice
