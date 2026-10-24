@@ -1,6 +1,6 @@
 # Car Dealership Inventory System
 
-Phases 1–3 establish the JavaScript monorepo, PostgreSQL/Prisma database, and user authentication for the Incubyte TDD kata. Vehicle and inventory APIs and the full frontend are planned for later phases.
+Phases 1–4 establish the JavaScript monorepo, PostgreSQL/Prisma database, authentication, and vehicle management. Purchasing, restocking, and the full frontend are planned for later phases.
 
 ## Structure
 
@@ -46,8 +46,13 @@ The backend uses Express, dotenv, Prisma, bcrypt, JWT, Jest, Supertest, ESLint, 
 | GET | `/api/health` | `200 {"status":"ok"}` |
 | POST | `/api/auth/register` | `201` with safe user details |
 | POST | `/api/auth/login` | `200` with a JWT and safe user details |
+| GET | `/api/vehicles` | Paginated list; login required |
+| GET | `/api/vehicles/search` | Combined filters; login required |
+| POST | `/api/vehicles` | Create; ADMIN required |
+| PUT | `/api/vehicles/:id` | Replace; ADMIN required |
+| DELETE | `/api/vehicles/:id` | Delete; ADMIN required |
 
-Register with JSON `{ "name": "Your Name", "email": "you@example.com", "password": "at-least-8-characters" }`. Login with `email` and `password`. Registration always creates a USER; sending a role is rejected. JWTs expire after one hour. Future protected routes will require `Authorization: Bearer <token>`; middleware verifies the token and reads the current role from PostgreSQL. The remaining planned API is specified in `REQUIREMENTS.md`.
+Register with JSON `{ "name": "Your Name", "email": "you@example.com", "password": "at-least-8-characters" }`. Login with `email` and `password`. Registration always creates a USER; sending a role is rejected. JWTs expire after one hour. Vehicle routes require `Authorization: Bearer <token>`. Vehicle bodies use `{ make, model, category, price, quantityInStock }`; IDs are UUIDs and returned prices are decimal strings. Listing defaults to page 1 and limit 20. Search filters combine with AND. The remaining planned API is specified in `REQUIREMENTS.md`.
 
 ## Testing and results
 
@@ -55,4 +60,4 @@ Run `npm run db:migrate:test` followed by `npm test` from `backend/`. Database t
 
 ## My AI Usage
 
-Codex assisted with Phase 0 requirements, the Phase 1 scaffold, Phase 2 database integration, and Phase 3 authentication tests, code, and documentation. AI helped structure tests and implement the layers quickly; actual failures, passing results, and database effects were checked before reporting them. The raw prompt and response record belongs in `PROMPTS.md`; it must not be replaced with a generated summary. If ChatGPT was used separately, its actual prompts and responses must be added by the user. Future commits involving AI assistance must disclose that assistance in the body and use the required co-author trailer.
+Codex assisted with Phase 0 requirements, the Phase 1 scaffold, Phase 2 database integration, Phase 3 authentication, and Phase 4 vehicle tests, code, and documentation. AI helped structure tests and implement the layers quickly; actual failures, passing results, and database effects were checked before reporting them. The raw prompt and response record belongs in `PROMPTS.md`; it must not be replaced with a generated summary. If ChatGPT was used separately, its actual prompts and responses must be added by the user. Future commits involving AI assistance must disclose that assistance in the body and use the required co-author trailer.

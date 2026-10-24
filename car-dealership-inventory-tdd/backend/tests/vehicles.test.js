@@ -8,6 +8,7 @@ const users = [];
 const vehicles = [];
 let userToken;
 let adminToken;
+let baselineId;
 const data = {
   make: 'Honda',
   model: 'City',
@@ -34,6 +35,17 @@ beforeAll(async () => {
     if (role === 'USER') userToken = token;
     else adminToken = token;
   }
+  const baseline = await prisma.vehicle.create({
+    data: {
+      make: 'Honda',
+      model: 'City',
+      category: 'Sedan',
+      price: '1200000.00',
+      quantity: 2,
+    },
+  });
+  baselineId = baseline.id;
+  vehicles.push(baselineId);
 });
 
 afterAll(async () => {
@@ -108,7 +120,7 @@ test('combines search filters and returns an empty list for no matches', async (
     )
     .set(auth(userToken));
   expect(response.status).toBe(200);
-  expect(response.body.data.some((vehicle) => vehicle.id === vehicles[0])).toBe(
+  expect(response.body.data.some((vehicle) => vehicle.id === baselineId)).toBe(
     true,
   );
   const empty = await request(app)
@@ -124,9 +136,55 @@ test('rejects invalid search bounds', async () => {
   expect(response.status).toBe(400);
 });
 
+test.each([
+  '/api/vehicles?limit=101',
+  '/api/vehicles?page=2147483647&limit=100',
+  '/api/vehicles/search?inStock=maybe',
+  '/api/vehicles/search?unknown=value',
+])('rejects invalid list query %s', async (path) => {
+  const response = await request(app).get(path).set(auth(userToken));
+  expect(response.status).toBe(400);
+});
+
+test('rejects a malformed ID and USER update/delete attempts', async () => {
+  expect(
+    (
+      await request(app)
+        .put('/api/vehicles/not-a-uuid')
+        .set(auth(adminToken))
+        .send(data)
+    ).status,
+  ).toBe(400);
+  expect(
+    (
+      await request(app)
+        .put(`/api/vehicles/${baselineId}`)
+        .set(auth(userToken))
+        .send(data)
+    ).status,
+  ).toBe(403);
+  expect(
+    (
+      await request(app)
+        .delete(`/api/vehicles/${baselineId}`)
+        .set(auth(userToken))
+    ).status,
+  ).toBe(403);
+});
+
 test('ADMIN replaces an existing vehicle', async () => {
+  const created = await prisma.vehicle.create({
+    data: {
+      make: 'Honda',
+      model: 'City',
+      category: 'Sedan',
+      price: '1200000.00',
+      quantity: 2,
+    },
+  });
+  vehicles.push(created.id);
   const response = await request(app)
-    .put(`/api/vehicles/${vehicles[0]}`)
+    .put(`/api/vehicles/${created.id}`)
     .set(auth(adminToken))
     .send({ ...data, model: 'Civic', quantityInStock: 0 });
   expect(response.status).toBe(200);
@@ -150,9 +208,18 @@ test('returns 404 for updates and deletes of a missing vehicle', async () => {
 });
 
 test('ADMIN deletes a vehicle', async () => {
+  const created = await prisma.vehicle.create({
+    data: {
+      make: 'Delete',
+      model: 'Me',
+      category: 'Test',
+      price: '100.00',
+      quantity: 0,
+    },
+  });
+  vehicles.push(created.id);
   const response = await request(app)
-    .delete(`/api/vehicles/${vehicles[0]}`)
+    .delete(`/api/vehicles/${created.id}`)
     .set(auth(adminToken));
   expect(response.status).toBe(204);
-  vehicles.shift();
 });

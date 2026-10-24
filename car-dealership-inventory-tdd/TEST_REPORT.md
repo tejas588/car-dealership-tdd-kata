@@ -45,3 +45,16 @@ The authentication tests use the dedicated PostgreSQL test database and clean cr
 | REFACTOR and regression | `npm run test:coverage -- --silent` | 5 suites and 40 tests passed after validation simplification and expanded regression cases; final coverage is recorded below. |
 
 Final Phase 3 coverage: 94.44% statements, 86.76% branches, 100% functions, and 94.38% lines for included backend `src` files. `npm run lint`, `npm run format:check`, and frontend `npm run build` passed after correcting an unused Express error-handler parameter lint rule and formatting. The previous Prisma 6 audit advisory remains unresolved.
+
+## Phase 4: vehicle listing, search, and admin CRUD (2026-10-24)
+
+The vehicle integration tests use the separate PostgreSQL test database and clean their fixtures.
+
+| Stage | Actual result |
+| --- | --- |
+| RED | `npm test -- --silent tests/vehicles.test.js`: 12 failed because routes were missing; one apparent 404 pass was not meaningful. Failing tests committed as `a1ca1f7`. |
+| GREEN | Same command: 13 passed after implementing vehicle routes and layers. |
+| Additional RED/GREEN | Oversized pagination offset returned 200 instead of 400 (1 failed, 17 passed); guard added, then 18 passed. |
+| REFACTOR | Test fixtures made less dependent on order; vehicle suite passed 18/18. |
+
+Final full-suite result: 6 suites and 58 tests passed, 0 failed. Coverage: 95.85% statements, 88.96% branches, 100% functions, 96.64% lines. Backend lint, formatting, and frontend build passed. Purchasing and restocking were not implemented. The Prisma 6 audit advisory remains unresolved.

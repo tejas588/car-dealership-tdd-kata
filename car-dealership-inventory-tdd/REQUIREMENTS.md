@@ -4,6 +4,8 @@
 
 > Phase 3 implementation update: Registration requires `{ name, email, password }` because `User.name` is required. It creates only USER accounts. Login returns a one-hour HS256 JWT. Reusable middleware verifies tokens and reads the current role from the database; no vehicle routes use it yet.
 
+> Phase 4 implementation update: Authenticated listing and combined search, plus ADMIN create, full update, and delete are implemented. Vehicle IDs are UUIDs, `quantityInStock` maps to stored `quantity`, and returned price is a two-place decimal string. Purchase and restock remain future work.
+
 This document defines the proposed contract for the Incubyte TDD kata. Phase 0 contains analysis only. No application code, database, or Git repository has been created.
 
 ## 1. Functional requirements
