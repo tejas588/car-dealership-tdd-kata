@@ -55,6 +55,13 @@ The backend was developed using the **Red-Green-Refactor** approach.
 
 See [TEST_REPORT.md](TEST_REPORT.md) for recorded test execution results and coverage.
 
+### Live Deployment
+
+Frontend: Vercel
+Backend: Render
+Database: Neon PostgreSQL
+The live application can be accessed using the link at the top of this README.
+
 ### AI Usage
 
 See the detailed **My AI Usage** section and [PROMPTS.md](PROMPTS.md) for AI assistance documentation.
